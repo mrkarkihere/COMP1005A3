@@ -39,21 +39,56 @@ public class DatabaseApplication{
 
     public void addStudent(String firstName, String lastName, String email, String enrollmentDate) throws SQLException{
 
-        String newStudent = "('" + firstName + "', '" + lastName + "', '" + email + "', '" + enrollmentDate + "');";
-        String query = ("INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES " + newStudent);
+        String query = "INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES (?, ?, ?, ?)";
 
-        Statement stmt = conn.createStatement();
-        int result = stmt.executeUpdate(query);
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setString(1, firstName);
+        pstmt.setString(2, lastName);
+        pstmt.setString(3, email);
+        pstmt.setDate(4, Date.valueOf(enrollmentDate));
+
+        int result = pstmt.executeUpdate();
 
         if(result > 1){
             System.out.println("A student was inserted successfully!");
         }
-        stmt.close();
+        pstmt.close();
     }
 
-    public void updateStudentEmail(int student_id, String new_email){
-        String query = "UPDATE students SET email = " + new_email + " WHERE id = " + student_id;
-        System.out.println(query);
+    public void updateStudentEmail(int student_id, String new_email) throws SQLException {
+
+        String query = "UPDATE students SET email = ? WHERE student_id = ?";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+
+        pstmt.setString(1, new_email);
+        pstmt.setInt(2, student_id);
+
+        int result = pstmt.executeUpdate();
+
+        if(result > 0){
+            System.out.println("student_" + student_id + "'s email was updated successfully!");
+        }else{
+            System.out.println("No student found with ID " + student_id);
+        }
+
+        pstmt.close();
+    }
+
+    public void deleteStudent(int student_id) throws SQLException{
+
+        String query = "DELETE FROM students WHERE student_id = ?";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+
+        pstmt.setInt(1, student_id);
+
+        int result = pstmt.executeUpdate();
+
+        if (result > 0) {
+            System.out.println("Student with ID " + student_id + " deleted.");
+        } else {
+            System.out.println("No student found with ID " + student_id);
+        }
+        pstmt.close();
     }
 
     public void connect(){
@@ -91,9 +126,10 @@ public class DatabaseApplication{
         DatabaseApplication app = new DatabaseApplication(url, user, password);
         // testing
         try {
-            app.getAllStudents();
+            //app.getAllStudents();
             //app.addStudent("Arun", "Karki", "ARUNKARKI@cmail.carleton.ca", "2024-03-18");
-            app.updateStudentEmail(1, "hello");
+            //app.updateStudentEmail(1, "john.doe@example.com");
+            app.deleteStudent(8);
         } catch (SQLException e) {
             e.printStackTrace();
         }
