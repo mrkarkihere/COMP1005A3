@@ -210,11 +210,12 @@ public class DatabaseApplication{
         String password = "test"; 
     
         DatabaseApplication app = new DatabaseApplication(url, user, password);
+
         // testing
         try {
-            //app.getAllStudents();
-            //app.addStudent("Arun", "Karki", "ARUNKARKI@cmail.carleton.ca", "2024-03-18");
-            //app.updateStudentEmail(1, "ARE_YOU_LOOKING@example.com");
+            app.getAllStudents();
+            app.addStudent("Arun", "Karki", "ARUNKARKI@cmail.carleton.ca", "2024-03-18");
+            app.updateStudentEmail(1, "john.doe@example.com@example.com");
             app.deleteStudent(11);
         } catch (SQLException e) {
             e.printStackTrace();
