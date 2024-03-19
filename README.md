@@ -1,5 +1,9 @@
 # Database Application for Student Records Management
 
+
+## YouTube Preview
+[Watch the demo on YouTube](https://youtu.be/uPlaMhpub_o)
+
 ## Overview
 The DatabaseApplication Java program facilitates the management of student records in a PostgreSQL database. It provides methods to perform basic CRUD (Create, Read, Update, Delete) operations on student records.
 
